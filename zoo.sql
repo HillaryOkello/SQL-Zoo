@@ -107,3 +107,17 @@ SELECT teacher.name, COALESCE(dept.name, 'None') FROM teacher LEFT JOIN dept ON 
 SELECT COUNT(name), COUNT(mobile) FROM teacher;
 SELECT dept.name, COUNT(teacher.name) FROM teacher RIGHT JOIN dept ON teacher.dept = dept.id WHERE dept.name IS NOT NULL GROUP BY dept.name;
 SELECT teacher.name, (CASE WHEN dept=1 OR dept=2 THEN 'Sci' WHEN dept=3 THEN 'Art' ELSE 'None' END) FROM teacher;
+
+--Self JOIN
+SELECT COUNT(id) FROM stops;
+SELECT id FROM stops WHERE name = 'Craiglockhart';
+SELECT stops.id, stops.name FROM stops JOIN route ON stop = stops.id WHERE num = 4 AND company = 'LRT' ORDER BY pos;
+SELECT company, num, COUNT(*) AS stops FROM route WHERE stop=149 OR stop=53 GROUP BY company, num HAVING stops = 2;
+SELECT a.company, a.num, a.stop, b.stop FROM route a JOIN route b ON (a.company=b.company AND a.num=b.num) WHERE a.stop=53 AND b.stop = 149;
+SELECT a.company, a.num, stopa.name, stopb.name FROM route a JOIN route b ON (a.company=b.company AND a.num=b.num) JOIN stops stopa ON (a.stop=stopa.id) JOIN stops stopb ON (b.stop=stopb.id)
+  WHERE stopa.name='Craiglockhart' AND stopb.name = 'London Road';
+SELECT DISTINCT a.company, a.num FROM route a JOIN route b ON (a.company=b.company AND a.num=b.num) WHERE a.stop=115 AND b.stop = 137;
+SELECT DISTINCT a.company, a.num FROM route a JOIN route b ON (a.company=b.company AND a.num=b.num) JOIN stops stopa ON (a.stop=stopa.id) JOIN stops stopb ON (b.stop=stopb.id)
+  WHERE stopa.name='Craiglockhart' AND stopb.name = 'Tollcross';
+SELECT DISTINCT stopb.name, a.company, a.num FROM route a JOIN route b ON (a.company=b.company AND a.num=b.num) JOIN stops stopa ON (a.stop=stopa.id) JOIN stops stopb ON (b.stop=stopb.id)
+  WHERE stopa.name='Craiglockhart' AND a.company = 'LRT';
