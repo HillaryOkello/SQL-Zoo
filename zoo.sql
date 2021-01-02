@@ -96,3 +96,14 @@ SELECT name FROM movie JOIN casting ON movieid = movie.id JOIN actor ON actorid 
 SELECT title, COUNT(actorid) FROM movie JOIN casting ON movieid = movie.id WHERE yr = 1978 GROUP BY title ORDER BY COUNT(actorid) DESC, title;
 SELECT DISTINCT(name) FROM actor JOIN casting ON actorid = actor.id
   WHERE movieid IN (SELECT movieid FROM casting JOIN actor ON actorid = actor.id WHERE name = 'Art Garfunkel') AND name != 'Art Garfunkel';
+
+--Using Null
+SELECT name FROM teacher WHERE dept IS NULL;
+SELECT teacher.name, dept.name FROM teacher INNER JOIN dept ON (teacher.dept=dept.id);
+SELECT teacher.name, dept.name FROM teacher LEFT JOIN dept ON (teacher.dept=dept.id);
+SELECT teacher.name, dept.name FROM teacher RIGHT JOIN dept ON (teacher.dept=dept.id);
+SELECT name, COALESCE(mobile, '07986 444 2266') FROM teacher;
+SELECT teacher.name, COALESCE(dept.name, 'None') FROM teacher LEFT JOIN dept ON teacher.dept = dept.id;
+SELECT COUNT(name), COUNT(mobile) FROM teacher;
+SELECT dept.name, COUNT(teacher.name) FROM teacher RIGHT JOIN dept ON teacher.dept = dept.id WHERE dept.name IS NOT NULL GROUP BY dept.name;
+SELECT teacher.name, (CASE WHEN dept=1 OR dept=2 THEN 'Sci' WHEN dept=3 THEN 'Art' ELSE 'None' END) FROM teacher;
